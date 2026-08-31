@@ -1,5 +1,6 @@
 package com.promptwise.controller;
 
+import com.promptwise.exception.GlobalExceptionHandler;
 import com.promptwise.service.PromptAnalysisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @WebMvcTest(PromptAnalysisController.class)
-@Import(PromptAnalysisService.class)
+@Import({
+        PromptAnalysisService.class,
+        GlobalExceptionHandler.class
+})
 class PromptAnalysisControllerTest {
 
     @Autowired
@@ -46,38 +51,59 @@ class PromptAnalysisControllerTest {
     }
 
     @Test
-    void shouldRejectBlankPrompt() throws Exception {
-        String requestBody = """
-                {
-                  "prompt": ""
-                }
-                """;
+void shouldRejectBlankPrompt() throws Exception {
+    String requestBody = """
+            {
+              "prompt": ""
+            }
+            """;
 
-        mockMvc.perform(
-                        post("/api/prompts/analyze")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(requestBody)
-                )
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void shouldRejectMissingPrompt() throws Exception {
-        mockMvc.perform(
-                        post("/api/prompts/analyze")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{}")
-                )
-                .andExpect(status().isBadRequest());
-    }
+    mockMvc.perform(
+                    post("/api/prompts/analyze")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestBody)
+            )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status")
+                    .value(400))
+            .andExpect(jsonPath("$.error")
+                    .value("Validation failed"))
+            .andExpect(jsonPath("$.details.prompt")
+                    .value("Prompt must not be blank"))
+            .andExpect(jsonPath("$.timestamp")
+                    .exists());
+}
 
     @Test
-    void shouldRejectInvalidJson() throws Exception {
-        mockMvc.perform(
-                        post("/api/prompts/analyze")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{invalid}")
-                )
-                .andExpect(status().isBadRequest());
-    }
+void shouldRejectMissingPrompt() throws Exception {
+    mockMvc.perform(
+                    post("/api/prompts/analyze")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{}")
+            )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status")
+                    .value(400))
+            .andExpect(jsonPath("$.error")
+                    .value("Validation failed"))
+            .andExpect(jsonPath("$.details.prompt")
+                    .value("Prompt must not be blank"));
+}
+
+    @Test
+void shouldRejectInvalidJson() throws Exception {
+    mockMvc.perform(
+                    post("/api/prompts/analyze")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{invalid}")
+            )
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status")
+                    .value(400))
+            .andExpect(jsonPath("$.error")
+                    .value("Malformed JSON"))
+            .andExpect(jsonPath("$.details.request")
+                    .value("Request body must contain valid JSON"));
+  }
+
 }
