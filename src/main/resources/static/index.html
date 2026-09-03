@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+    >
+    <meta
+            name="description"
+            content="Analyze and improve AI prompts with PromptWise."
+    >
+    <title>PromptWise</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<script src="/app.js"></script>
+<body>
+<header>
+    <p>PromptWise</p>
+    <h1>Build clearer, safer, more effective prompts.</h1>
+    <p>
+        Analyze prompts, select prompting techniques, identify bias,
+        and review Responsible AI risks.
+    </p>
+    <a href="/api">View API</a>
+</header>
+
+<main>
+    <section>
+        <h2>Prompt Analyzer</h2>
+        <p>
+            Score clarity, specificity, context, constraints,
+            and output format.
+        </p>
+
+        <form id="analyzer-form">
+            <label for="analyzer-prompt">Prompt</label>
+            <textarea
+                    id="analyzer-prompt"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Example: Help me study"
+            ></textarea>
+            <button type="submit">Analyze prompt</button>
+        </form>
+
+        <div id="analyzer-result" aria-live="polite"></div>
+    </section>
+
+    <section>
+        <h2>Prompt Improvement Generator</h2>
+        <p>Turn a weak request into a structured prompt.</p>
+
+        <form id="improvement-form">
+            <label for="improvement-prompt">Prompt</label>
+            <textarea
+                    id="improvement-prompt"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Example: Help me study"
+            ></textarea>
+            <button type="submit">Improve prompt</button>
+        </form>
+
+        <div id="improvement-result" aria-live="polite"></div>
+    </section>
+
+    <section>
+        <h2>Prompt Technique Recommender</h2>
+        <p>Find a prompting technique suited to your task.</p>
+
+        <form id="technique-form">
+            <label for="technique-task">Task description</label>
+            <textarea
+                    id="technique-task"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Compare several architecture options"
+            ></textarea>
+            <button type="submit">Recommend technique</button>
+        </form>
+
+        <div id="technique-result" aria-live="polite"></div>
+    </section>
+
+    <section>
+        <h2>Bias Scenario Classifier</h2>
+        <p>Identify potential bias in a scenario.</p>
+
+        <form id="bias-form">
+            <label for="bias-scenario">Scenario</label>
+            <textarea
+                    id="bias-scenario"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Describe a potentially biased situation"
+            ></textarea>
+            <button type="submit">Classify bias</button>
+        </form>
+
+        <div id="bias-result" aria-live="polite"></div>
+    </section>
+
+    <section>
+        <h2>Responsible AI Checker</h2>
+        <p>
+            Assess fairness, transparency, accountability,
+            privacy, safety, and societal impact.
+        </p>
+
+        <form id="responsible-ai-form">
+            <label for="responsible-ai-scenario">
+                AI scenario
+            </label>
+            <textarea
+                    id="responsible-ai-scenario"
+                    rows="6"
+                    maxlength="5000"
+                    required
+                    placeholder="Describe how an AI system will be used"
+            ></textarea>
+            <button type="submit">
+                Check Responsible AI risks
+            </button>
+        </form>
+
+        <div
+                id="responsible-ai-result"
+                aria-live="polite"
+        ></div>
+    </section>
+</main>
+
+<footer>
+    <p>
+        PromptWise uses explainable rules. Results are educational
+        guidance and do not replace expert review.
+    </p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
