@@ -61,6 +61,42 @@ analyzerForm.addEventListener("submit", async (event) => {
     }
 });
 
+const techniqueForm =
+    document.querySelector("#technique-form");
+
+const techniqueResult =
+    document.querySelector("#technique-result");
+
+    techniqueForm.addEventListener(
+        "submit",
+        async (event) => {
+            event.preventDefault();
+    
+            const task = document
+                .querySelector("#technique-task")
+                .value
+                .trim();
+    
+            setLoading(techniqueForm, true);
+    
+            techniqueResult.innerHTML =
+                "<p>Choosing a technique...</p>";
+    
+            try {
+                const result = await postJson(
+                    "/api/techniques/recommend",
+                    { task }
+                );
+    
+                renderTechniqueResult(result);
+            } catch (error) {
+                renderError(techniqueResult, error);
+            } finally {
+                setLoading(techniqueForm, false);
+            }
+        }
+    );
+    
 async function postJson(url, body) {
     const response = await fetch(url, {
         method: "POST",
@@ -83,6 +119,34 @@ async function postJson(url, body) {
     }
 
     return data;
+}
+
+function renderTechniqueResult(result) {
+    const alternatives = result.alternatives
+        .map((alternative) => `
+            <li>${escapeHtml(alternative)}</li>
+        `)
+        .join("");
+
+    const signals = result.detectedSignals
+        .map((signal) => `
+            <li>${escapeHtml(signal)}</li>
+        `)
+        .join("");
+
+    techniqueResult.innerHTML = `
+        <h3>
+            ${escapeHtml(result.recommendedTechnique)}
+        </h3>
+
+        <p>${escapeHtml(result.explanation)}</p>
+
+        <h4>Why this technique?</h4>
+        <ul>${signals}</ul>
+
+        <h4>Alternatives</h4>
+        <ul>${alternatives}</ul>
+    `;
 }
 
 function renderAnalyzerResult(result) {
