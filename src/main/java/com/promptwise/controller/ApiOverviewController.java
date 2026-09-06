@@ -49,7 +49,7 @@ public class ApiOverviewController {
 
         return new ApiOverviewResponse(
                 "PromptWise",
-                "0.0.1",
+                "0.1.0",
                 "UP",
                 endpoints
         );
