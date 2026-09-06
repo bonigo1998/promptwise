@@ -65,9 +65,17 @@ Start the application:
 
 The server runs at:
 
+
 ```text
 http://localhost:8080
 ```
+
+## Web interface
+
+Open the browser interface at:
+
+```text
+http://localhost:8080/
 
 ## API overview
 
@@ -224,3 +232,86 @@ Run one test class:
 ## License
 
 No license has been selected yet.
+
+
+## 2. Add the architecture section
+
+Before `## API overview`, add:
+
+```markdown
+## Architecture
+
+PromptWise uses a layered architecture:
+
+```text
+Browser interface
+       |
+       | HTTP and JSON
+       v
+REST controllers
+       |
+       v
+Rule-based services
+       |
+       v
+Response models
+       |
+       v
+JSON rendered in the browser
+
+
+## 3. Replace the project structure section
+
+Replace the existing project structure block with:
+
+```markdown
+## Project structure
+
+```text
+promptwise/
+├── pom.xml
+├── mvnw
+├── mvnw.cmd
+├── README.md
+└── src/
+    ├── main/
+    │   ├── java/com/promptwise/
+    │   │   ├── controller/
+    │   │   ├── exception/
+    │   │   ├── model/
+    │   │   ├── service/
+    │   │   └── PromptwiseApplication.java
+    │   └── resources/
+    │       ├── application.properties
+    │       └── static/
+    │           ├── index.html
+    │           ├── styles.css
+    │           └── app.js
+    └── test/
+        └── java/com/promptwise/
+            ├── controller/
+            ├── service/
+            └── PromptwiseApplicationTests.java
+
+
+## 4. Add packaged application instructions
+
+After the `## Testing` section, add:
+
+```markdown
+## Package and run
+
+Build an executable JAR:
+
+```bash
+./mvnw clean package
+
+
+## 6. Review the finished README
+
+Save with `Command + S`, then run:
+
+```bash
+git diff --check
+git diff -- README.md
+
